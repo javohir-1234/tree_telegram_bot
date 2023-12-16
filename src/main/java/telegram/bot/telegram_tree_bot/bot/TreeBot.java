@@ -9,6 +9,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import telegram.bot.telegram_tree_bot.entity.Tree;
 import telegram.bot.telegram_tree_bot.entity.dto.TreeDTO;
@@ -32,6 +33,7 @@ public class TreeBot extends TelegramLongPollingBot {
     private static final String ADD_ELEMENT = "/addElement";
     private static final String VIEW_TREE = "/viewTree";
     private static final String REMOVE = "/removeElement";
+
 
 //  ENDING OF STATIC METHODS
 
@@ -81,6 +83,10 @@ public class TreeBot extends TelegramLongPollingBot {
                 }
                 case VIEW_TREE -> {
                     viewTree(chatId);
+                    return;
+                }
+                default -> {
+                    incorrectCommand(chatId);
                     return;
                 }
 
@@ -185,6 +191,14 @@ public class TreeBot extends TelegramLongPollingBot {
         }
         String tree = stringBuilder.toString();
         messageSender(chatId, tree);
+        return;
+    }
+
+    public void incorrectCommand(Long chatId){
+        var text = """
+                  Команда не найдена
+                  """;
+        messageSender(chatId, text);
         return;
     }
 //  ENDING OF METHODS FOR COMMANDS

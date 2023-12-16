@@ -2,27 +2,29 @@ version: "3.8"
 
 services:
   myApp:
+    image: telegram:1
     build: ./
     ports:
       - "8080:8080"
     environment:
       DB_USER: postgres
       DB_NAME: tree_category
-      DB_HOST: postgres_db
+      DB_HOST: postgres
       DB_PASSWORD: 2610
       DB_PORT: 5432
     depends_on:
-      - postgres_db
-  postgres_db:
+      - postgres
+  postgres:
     image: postgres:latest
     container_name: postgres-db
     ports:
       - "5433:5432"
     environment:
       POSTGRES_PASSWORD: tree
-      POSTGRES_USER: tree
+      POSTGRES_USER: postgres
       POSTGRES_DB: tree_category
     volumes:
       - pg_data:/var/lib/postgresql/data
+
 volumes:
   pg_data: {}

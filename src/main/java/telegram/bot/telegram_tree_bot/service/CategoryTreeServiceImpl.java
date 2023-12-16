@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryTreeServiceImpl implements CategoryTreeService{
 
 
-    @Autowired
-    private TreeRepository treeRepository;
+    private final TreeRepository treeRepository;
 
 
 
@@ -62,7 +63,7 @@ public class CategoryTreeServiceImpl implements CategoryTreeService{
         return true;
     }
 
-    private void deleteTreeAndChildren(Tree parent) {
+    public void deleteTreeAndChildren(Tree parent) {
         if (parent.getChildren() != null) {
             for (Tree child : new ArrayList<>(parent.getChildren())) {
                 deleteTreeAndChildren(child);
