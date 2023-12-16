@@ -131,10 +131,13 @@ public class TreeBot extends TelegramLongPollingBot {
             Tree tree = service.createCategoryTreeChildren(commands.get(1), commands.get(2));
             if (Objects.isNull(tree)){
                 var message = """
-                       Я не смог найти Родителя по имени %s  
+                       Я не смог найти Родителя по имени %s
+                       Просмотр всего дерева категорий:
                  """;
                 String format = String.format(message, commands.get(1));
                 messageSender(chatId, format);
+                viewTree(chatId);
+                return;
             }else {
                 var message = """
                             Дерево успешно сохранено
@@ -166,8 +169,13 @@ public class TreeBot extends TelegramLongPollingBot {
                 messageSender(chatId, message);
                 return;
             }
+        }else {
+            var message = """
+                           Неверный формат ввода
+                            """;
+            messageSender(chatId, message);
+            return;
         }
-        return;
     }
 
     public void helpCommand(Long chatId){
@@ -189,9 +197,17 @@ public class TreeBot extends TelegramLongPollingBot {
         for (TreeDTO tree : all) {
             stringBuilder.append(tree.toString());
         }
-        String tree = stringBuilder.toString();
-        messageSender(chatId, tree);
-        return;
+        if (!all.isEmpty()) {
+            String tree = stringBuilder.toString();
+            messageSender(chatId, tree);
+            return;
+        }else {
+            var text = """
+                    Дерево пуст 
+                    """;
+            messageSender(chatId, text);
+            return;
+        }
     }
 
     public void incorrectCommand(Long chatId){

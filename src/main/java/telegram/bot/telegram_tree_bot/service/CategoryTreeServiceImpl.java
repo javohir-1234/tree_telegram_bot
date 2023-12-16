@@ -56,11 +56,14 @@ public class CategoryTreeServiceImpl implements CategoryTreeService{
     @Override
     public boolean deleteCategoryTree(String name) {
         Optional<Tree> treeRepositoryByName = treeRepository.findByName(name);
-        treeRepositoryByName.ifPresent(this::deleteTreeAndChildren);
-        if (treeRepositoryByName.isPresent() && treeRepositoryByName.get().getParent() == null){
-            treeRepository.delete(treeRepositoryByName.get());
+        if (treeRepositoryByName.isPresent()) {
+            treeRepositoryByName.ifPresent(this::deleteTreeAndChildren);
+            if (treeRepositoryByName.isPresent() && treeRepositoryByName.get().getParent() == null) {
+                treeRepository.delete(treeRepositoryByName.get());
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     public void deleteTreeAndChildren(Tree parent) {
